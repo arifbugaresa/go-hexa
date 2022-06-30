@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"errors"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"time"
@@ -30,6 +31,22 @@ func (s *jwtService) GenerateToken(userID int64) (tokenJwt string, err error) {
 
 	tokenJwt, err = token.SignedString(SECRET)
 	fmt.Println(tokenJwt)
+	if err != nil {
+		return
+	}
+
+	return
+}
+
+func (s *jwtService) ValidateToken(token string) (jwtToken *jwt.Token, err error) {
+	jwtToken, err = jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
+		_, ok := token.Method.(*jwt.SigningMethodHMAC)
+		if !ok {
+			return nil, errors.New("invalid token")
+		}
+		return []byte(SECRET), nil
+	})
+
 	if err != nil {
 		return
 	}
