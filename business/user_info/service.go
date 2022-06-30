@@ -45,3 +45,4 @@ func (s *service) Login(request dto.UserLoginRequest) (userOnDB UserInfo, err er
 
 	return
 }
+
