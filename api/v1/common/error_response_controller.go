@@ -24,6 +24,14 @@ func NewBadRequestResponse() (int, ControllerResponse) {
 	}
 }
 
+func NewBadRequestEmailOrPassword() (int, ControllerResponse) {
+	return http.StatusBadRequest, ControllerResponse{
+		Code:    ErrBadRequest,
+		Message: "Terjadi kesalahan, email atau password salah",
+		Data:    nil,
+	}
+}
+
 func NewErrBindData() (int, ControllerResponse) {
 	return http.StatusBadRequest, ControllerResponse{
 		Code:    ErrBindData,

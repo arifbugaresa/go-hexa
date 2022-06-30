@@ -1,6 +1,11 @@
 package user_info
 
-import "github.com/arifbugaresa/go-hexa/business/user_info"
+import (
+	"github.com/arifbugaresa/go-hexa/api/v1/common"
+	"github.com/arifbugaresa/go-hexa/api/v1/user_info/dto"
+	"github.com/arifbugaresa/go-hexa/business/user_info"
+	"github.com/labstack/echo/v4"
+)
 
 type Controller struct {
 	service user_info.Service
@@ -12,3 +17,16 @@ func NewController(service user_info.Service) *Controller {
 	}
 }
 
+func (c *Controller) Login(context echo.Context) (err error) {
+	var request dto.UserLoginRequest
+	if err = context.Bind(&request); err != nil {
+		return context.JSON(common.NewErrBindData())
+	}
+
+	_, err = c.service.Login(request)
+	if err != nil {
+		return context.JSON(common.NewBadRequestEmailOrPassword())
+	}
+
+	return context.JSON(common.NewSuccessResponseWithData("Success Login.", nil))
+}

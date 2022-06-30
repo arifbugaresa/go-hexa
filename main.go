@@ -3,9 +3,11 @@ package main
 import (
 	"fmt"
 	"github.com/arifbugaresa/go-hexa/api/v1"
-	"github.com/arifbugaresa/go-hexa/business/user_info"
+	userInfoContr "github.com/arifbugaresa/go-hexa/api/v1/user_info"
+	userInfoServ "github.com/arifbugaresa/go-hexa/business/user_info"
 	configuration "github.com/arifbugaresa/go-hexa/config"
 	"github.com/arifbugaresa/go-hexa/modules/database"
+	userInfoRepo "github.com/arifbugaresa/go-hexa/modules/user_info"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/gommon/log"
 	"strconv"
@@ -17,19 +19,25 @@ var (
 	e            = echo.New()
 )
 
-func main()  {
+var (
+	userInfoRepository = userInfoRepo.NewRepository(dbConnection)
+	userInfoService    = userInfoServ.NewService(userInfoRepository)
+	userInfoController = userInfoContr.NewController(userInfoService)
+)
+
+func main() {
 	defer database.CloseDatabaseConnection(dbConnection)
 
 	migrateDatabase()
 
-	api.Controller(e)
+	api.Controller(e, userInfoController)
 
 	runServer()
 }
 
 func migrateDatabase() {
 	dbConnection.AutoMigrate(
-		&user_info.UserInfo{},
+		&userInfoServ.UserInfo{},
 	)
 
 	log.Info("Success migrate database, " + strconv.Itoa(int(dbConnection.RowsAffected)) + " row affected.")
@@ -42,4 +50,3 @@ func runServer() {
 		log.Info("shutting down the server")
 	}
 }
-
