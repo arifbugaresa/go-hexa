@@ -19,5 +19,6 @@ func Controller(
 	// user info
 	userInfo := e.Group(version)
 	userInfo.POST("/login", userInfoController.Login)
+	userInfo.GET("/user-info", userInfoController.GetListUserInfo)
 
 }

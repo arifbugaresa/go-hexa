@@ -46,3 +46,27 @@ func (s *service) Login(request dto.UserLoginRequest) (userOnDB UserInfo, err er
 	return
 }
 
+func (s *service) GetListUserInfo() (listUserInfo []dto.GetListUserResponse, err error) {
+
+	listUserInfoOnDB, err := s.repository.FindAllUserInfo()
+	if err != nil {
+		return nil, business.GenerateErrorQueryDatabase(err)
+	}
+
+	listUserInfo = s.convertModelToDTOOutForGetList(listUserInfoOnDB)
+
+	return
+}
+
+func (s *service) convertModelToDTOOutForGetList(listUserInfoOnDB []UserInfoModel) (listUserInfoResponse []dto.GetListUserResponse) {
+	for _, userInfoOnDB := range listUserInfoOnDB {
+		userInfoResponse := dto.GetListUserResponse{
+			ID:       userInfoOnDB.ID,
+			Username: userInfoOnDB.Username,
+			Email:    userInfoOnDB.Email,
+		}
+		listUserInfoResponse = append(listUserInfoResponse, userInfoResponse)
+	}
+	return
+}
+

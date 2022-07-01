@@ -32,6 +32,8 @@ func errorMapping(err error) (int, BusinessResponse) {
 		return newInternalServerErrorResponse()
 	case business.ErrDataNotFound:
 		return newNotFoundResponse()
+	case business.ErrDatabase:
+		return newInternalServerErrorResponse()
 	}
 }
 

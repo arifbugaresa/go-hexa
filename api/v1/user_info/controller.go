@@ -39,3 +39,14 @@ func (c *Controller) Login(context echo.Context) (err error) {
 
 	return context.JSON(common.NewSuccessResponseWithData("Success Login.", dto.UserLoginResponse{Token: token}))
 }
+
+func (c *Controller) GetListUserInfo(context echo.Context) (err error) {
+	var response []dto.GetListUserResponse
+
+	response, err = c.service.GetListUserInfo()
+	if err != nil {
+		return context.JSON(common.NewErrorBusinessResponse(err))
+	}
+
+	return context.JSON(common.NewSuccessResponseWithData("Success Get List Data", response))
+}

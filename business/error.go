@@ -12,6 +12,7 @@ var (
 	ErrEmailAndPasswordMismatch = errors.New("error email and password mismatch")
 	ErrInsertData               = errors.New("error insert data")
 	ErrDeleteData               = errors.New("error delete data")
+	ErrDatabase                 = errors.New("error from database")
 )
 
 func GenerateErrorEmailAndPasswordMissmatch() (err error) {
@@ -26,5 +27,5 @@ func GenerateErrorDataUserNotFound() (err error) {
 
 func GenerateErrorQueryDatabase(pureError error) (err error) {
 	log.Error(pureError)
-	return pureError
+	return ErrDatabase
 }
