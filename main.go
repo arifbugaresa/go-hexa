@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/arifbugaresa/go-hexa/api/v1"
+	"github.com/arifbugaresa/go-hexa/api/v1/health"
 	userInfoContr "github.com/arifbugaresa/go-hexa/api/v1/user_info"
 	userInfoServ "github.com/arifbugaresa/go-hexa/business/user_info"
 	configuration "github.com/arifbugaresa/go-hexa/config"
@@ -25,6 +26,7 @@ var (
 	userInfoRepository = userInfoRepo.NewRepository(dbConnection)
 	userInfoService    = userInfoServ.NewService(userInfoRepository)
 	userInfoController = userInfoContr.NewController(userInfoService, authService)
+	HealthController   = health.NewController()
 )
 
 func main() {
@@ -32,7 +34,7 @@ func main() {
 
 	migrateDatabase()
 
-	api.Controller(e, userInfoController)
+	api.Controller(e, HealthController, userInfoController)
 
 	runServer()
 }
@@ -52,4 +54,3 @@ func runServer() {
 		log.Info("shutting down the server")
 	}
 }
-
