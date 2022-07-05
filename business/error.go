@@ -13,6 +13,8 @@ var (
 	ErrInsertData               = errors.New("error insert data")
 	ErrDeleteData               = errors.New("error delete data")
 	ErrDatabase                 = errors.New("error from database")
+	ErrJwt                      = errors.New("error from token jwt invalid")
+	ErrUnauthorized             = errors.New("error from token jwt unauthorized")
 )
 
 func GenerateErrorEmailAndPasswordMissmatch() (err error) {

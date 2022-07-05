@@ -11,6 +11,7 @@ const (
 	errInternalServerError errorBusinessResponseCode = "internal_server_error"
 	errHasBeenModified     errorBusinessResponseCode = "data_has_been modified"
 	errNotFound            errorBusinessResponseCode = "data_not_found"
+	errUnauthorized        errorBusinessResponseCode = "unauthorized"
 )
 
 //BusinessResponse default payload response
@@ -34,6 +35,8 @@ func errorMapping(err error) (int, BusinessResponse) {
 		return newNotFoundResponse()
 	case business.ErrDatabase:
 		return newInternalServerErrorResponse()
+	case business.ErrJwt:
+		return NewUnauthorizedErrorResponse()
 	}
 }
 
@@ -42,6 +45,14 @@ func newInternalServerErrorResponse() (int, BusinessResponse) {
 	return http.StatusInternalServerError, BusinessResponse{
 		errInternalServerError,
 		"Internal server error",
+		map[string]interface{}{},
+	}
+}
+
+func NewUnauthorizedErrorResponse() (int, BusinessResponse) {
+	return http.StatusUnauthorized, BusinessResponse{
+		errUnauthorized,
+		"Unauthorized",
 		map[string]interface{}{},
 	}
 }

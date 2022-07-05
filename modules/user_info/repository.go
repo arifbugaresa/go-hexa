@@ -44,3 +44,8 @@ func (r *repository) FindAllUserInfo() (listUserInfo []user_info.UserInfoModel, 
 
 	return
 }
+
+func (r *repository) FindUserInfoByID(ID int) (userOnDB user_info.UserInfoModel, err error) {
+	err = r.db.Raw("SELECT id FROM user_info WHERE id = ?", ID).Scan(&userOnDB.ID).Error
+	return
+}

@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/arifbugaresa/go-hexa/api/v1/user_info"
+	"github.com/arifbugaresa/go-hexa/middleware/auth"
 	"github.com/labstack/echo/v4"
 )
 
@@ -16,9 +17,14 @@ func Controller(
 		return c.NoContent(200)
 	})
 
-	// user info
+	// Public API
+	// User Info
 	userInfo := e.Group(version)
 	userInfo.POST("/login", userInfoController.Login)
-	userInfo.GET("/user-info", userInfoController.GetListUserInfo)
+
+	// Authorized API
+	// User Info
+	userInfoJwt := e.Group(version)
+	userInfoJwt.GET("/user-info", userInfoController.GetListUserInfo, auth.ValidateJwtMiddleware)
 
 }

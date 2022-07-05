@@ -70,3 +70,7 @@ func (s *service) convertModelToDTOOutForGetList(listUserInfoOnDB []UserInfoMode
 	return
 }
 
+func (s *service) FindUserInfoByID(ID int) (userOnDB UserInfoModel, err error) {
+	return s.repository.FindUserInfoByID(ID)
+}
+
