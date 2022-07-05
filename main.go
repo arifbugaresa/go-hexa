@@ -3,11 +3,14 @@ package main
 import (
 	"fmt"
 	"github.com/arifbugaresa/go-hexa/api/v1"
+	absensiContr "github.com/arifbugaresa/go-hexa/api/v1/absensi"
 	"github.com/arifbugaresa/go-hexa/api/v1/health"
 	userInfoContr "github.com/arifbugaresa/go-hexa/api/v1/user_info"
+	absensiServ "github.com/arifbugaresa/go-hexa/business/absensi"
 	userInfoServ "github.com/arifbugaresa/go-hexa/business/user_info"
 	configuration "github.com/arifbugaresa/go-hexa/config"
 	"github.com/arifbugaresa/go-hexa/middleware/auth"
+	absensiRepo "github.com/arifbugaresa/go-hexa/modules/absensi"
 	"github.com/arifbugaresa/go-hexa/modules/database"
 	userInfoRepo "github.com/arifbugaresa/go-hexa/modules/user_info"
 	"github.com/labstack/echo/v4"
@@ -27,6 +30,9 @@ var (
 	userInfoService    = userInfoServ.NewService(userInfoRepository)
 	userInfoController = userInfoContr.NewController(userInfoService, authService)
 	HealthController   = health.NewController()
+	absensiRepository  = absensiRepo.NewRepository(dbConnection)
+	absensiSevice      = absensiServ.NewService(absensiRepository)
+	absensiController  = absensiContr.NewController(absensiSevice)
 )
 
 func main() {
@@ -34,7 +40,7 @@ func main() {
 
 	migrateDatabase()
 
-	api.Controller(e, HealthController, userInfoController)
+	api.Controller(e, HealthController, userInfoController, absensiController)
 
 	runServer()
 }
@@ -42,6 +48,7 @@ func main() {
 func migrateDatabase() {
 	dbConnection.AutoMigrate(
 		&userInfoServ.UserInfo{},
+		&absensiServ.Absensi{},
 	)
 
 	log.Info("Success migrate database, " + strconv.Itoa(int(dbConnection.RowsAffected)) + " row affected.")

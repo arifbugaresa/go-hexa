@@ -12,6 +12,7 @@ const (
 	errHasBeenModified     errorBusinessResponseCode = "data_has_been modified"
 	errNotFound            errorBusinessResponseCode = "data_not_found"
 	errUnauthorized        errorBusinessResponseCode = "unauthorized"
+	errDuplicateCheckIn    errorBusinessResponseCode = "duplicate_check_in"
 )
 
 //BusinessResponse default payload response
@@ -37,6 +38,10 @@ func errorMapping(err error) (int, BusinessResponse) {
 		return newInternalServerErrorResponse()
 	case business.ErrJwt:
 		return NewUnauthorizedErrorResponse()
+	case business.ErrDatabase:
+		return newInternalServerErrorResponse()
+	case business.ErrDuplicateCheckIn:
+		return NewDuplicateCheckInErrorResponse()
 	}
 }
 
@@ -53,6 +58,14 @@ func NewUnauthorizedErrorResponse() (int, BusinessResponse) {
 	return http.StatusUnauthorized, BusinessResponse{
 		errUnauthorized,
 		"Unauthorized",
+		map[string]interface{}{},
+	}
+}
+
+func NewDuplicateCheckInErrorResponse() (int, BusinessResponse) {
+	return http.StatusBadRequest, BusinessResponse{
+		errDuplicateCheckIn,
+		"Duplicate Check In",
 		map[string]interface{}{},
 	}
 }

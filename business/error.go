@@ -7,7 +7,7 @@ import (
 
 var (
 	ErrInvalidBody              = errors.New("given body cannot be parsed to struct")
-	ErrGetDataFromDB            = errors.New("error get data from db")
+	ErrGetDataFromDB            = errors.New("error from db")
 	ErrDataNotFound             = errors.New("error data not found")
 	ErrEmailAndPasswordMismatch = errors.New("error email and password mismatch")
 	ErrInsertData               = errors.New("error insert data")
@@ -15,6 +15,7 @@ var (
 	ErrDatabase                 = errors.New("error from database")
 	ErrJwt                      = errors.New("error from token jwt invalid")
 	ErrUnauthorized             = errors.New("error from token jwt unauthorized")
+	ErrDuplicateCheckIn         = errors.New("duplicate check in")
 )
 
 func GenerateErrorEmailAndPasswordMissmatch() (err error) {
