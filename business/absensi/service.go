@@ -48,3 +48,28 @@ func (s *service) CheckIn(UserID int) (err error) {
 
 	return
 }
+
+func (s *service) CheckOut(UserID int) (err error) {
+
+	absensiOnDB, err := s.repository.FindAbsensiByUserID(UserID)
+	if err != nil {
+		return business.ErrGetDataFromDB
+	}
+
+	// validasi checkin bukan hari ini
+	yearNow, monthNow, dayNow := time.Now().Date()
+	yearDB, monthDB, dayDB := absensiOnDB.CheckInTime.Date()
+	if (yearNow != yearDB) || (monthNow != monthDB) || (dayNow != dayDB) {
+		return business.ErrForbiddenCheckOut
+	}
+
+	absensiOnDB.CheckOutTime = time.Now()
+	absensiOnDB.UpdatedAt = time.Now()
+	absensiOnDB.CheckOut = true
+	err = s.repository.UpdateCheckOutAbsensi(absensiOnDB)
+	if err != nil {
+		return business.GenerateErrorQueryDatabase(err)
+	}
+
+	return
+}

@@ -13,6 +13,8 @@ const (
 	errNotFound            errorBusinessResponseCode = "data_not_found"
 	errUnauthorized        errorBusinessResponseCode = "unauthorized"
 	errDuplicateCheckIn    errorBusinessResponseCode = "duplicate_check_in"
+	errDuplicateCheckOut   errorBusinessResponseCode = "duplicate_check_out"
+	errForbiddenCheckOut   errorBusinessResponseCode = "forbidden_check_out"
 )
 
 //BusinessResponse default payload response
@@ -42,6 +44,10 @@ func errorMapping(err error) (int, BusinessResponse) {
 		return newInternalServerErrorResponse()
 	case business.ErrDuplicateCheckIn:
 		return NewDuplicateCheckInErrorResponse()
+	case business.ErrDuplicateCheckOut:
+		return NewDuplicateCheckOutErrorResponse()
+	case business.ErrForbiddenCheckOut:
+		return newForbiddenCheckOutErrorResponse()
 	}
 }
 
@@ -50,6 +56,14 @@ func newInternalServerErrorResponse() (int, BusinessResponse) {
 	return http.StatusInternalServerError, BusinessResponse{
 		errInternalServerError,
 		"Internal server error",
+		map[string]interface{}{},
+	}
+}
+
+func newForbiddenCheckOutErrorResponse() (int, BusinessResponse) {
+	return http.StatusForbidden, BusinessResponse{
+		errForbiddenCheckOut,
+		"Forbidden CheckOut",
 		map[string]interface{}{},
 	}
 }
@@ -75,6 +89,14 @@ func newHasBeedModifiedResponse() (int, BusinessResponse) {
 	return http.StatusBadRequest, BusinessResponse{
 		errHasBeenModified,
 		"Data has been modified",
+		map[string]interface{}{},
+	}
+}
+
+func NewDuplicateCheckOutErrorResponse() (int, BusinessResponse) {
+	return http.StatusBadRequest, BusinessResponse{
+		errDuplicateCheckOut,
+		"Duplicate CheckOut",
 		map[string]interface{}{},
 	}
 }

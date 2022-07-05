@@ -1,10 +1,12 @@
 package absensi
 
 type Service interface {
-	CheckIn(ID int) (err error)
+	CheckIn(User int) (err error)
+	CheckOut(UserID int) (err error)
 }
 
 type Repository interface {
 	FindAbsensiByUserID(ID int) (absensi Absensi, err error)
 	InsertCheckInAbsensi(absensi Absensi) (err error)
+	UpdateCheckOutAbsensi(absensi Absensi) (err error)
 }

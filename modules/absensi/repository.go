@@ -23,3 +23,7 @@ func (r *repository) FindAbsensiByUserID(ID int) (absensi absensi.Absensi, err e
 func (r *repository) InsertCheckInAbsensi(absensi absensi.Absensi) (err error) {
 	return r.db.Create(&absensi).Error
 }
+
+func (r *repository) UpdateCheckOutAbsensi(absensi absensi.Absensi) (err error) {
+	return r.db.Save(&absensi).Error
+}

@@ -27,5 +27,6 @@ func Controller(
 	// Absensi
 	absensi := e.Group(version)
 	absensi.POST("/user/checkin", absensiController.CheckIn, auth.ValidateJwtMiddleware)
+	absensi.POST("/user/checkout", absensiController.CheckOut, auth.ValidateJwtMiddleware)
 
 }

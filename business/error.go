@@ -16,6 +16,8 @@ var (
 	ErrJwt                      = errors.New("error from token jwt invalid")
 	ErrUnauthorized             = errors.New("error from token jwt unauthorized")
 	ErrDuplicateCheckIn         = errors.New("duplicate check in")
+	ErrDuplicateCheckOut        = errors.New("duplicate check Out")
+	ErrForbiddenCheckOut        = errors.New("forbidden check Out")
 )
 
 func GenerateErrorEmailAndPasswordMissmatch() (err error) {

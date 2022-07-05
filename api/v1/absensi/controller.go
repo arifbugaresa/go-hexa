@@ -26,3 +26,14 @@ func (c *Controller) CheckIn(context echo.Context) (err error) {
 
 	return context.JSON(common.NewSuccessResponseWithoutData("Berhasil CheckIn"))
 }
+
+func (c *Controller) CheckOut(context echo.Context) (err error) {
+	userIDLoggedIn := context.Get("currentUser").(int)
+
+	err = c.service.CheckOut(userIDLoggedIn)
+	if err != nil {
+		return context.JSON(common.NewErrorBusinessResponse(err))
+	}
+
+	return context.JSON(common.NewSuccessResponseWithoutData("Berhasil CheckOut"))
+}
