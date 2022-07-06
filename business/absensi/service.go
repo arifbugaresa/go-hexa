@@ -10,7 +10,6 @@ type service struct {
 	repository Repository
 }
 
-// NewService is used to inject repo product to service
 func NewService(repository Repository) Service {
 	return &service{
 		repository,
@@ -86,8 +85,10 @@ func (s *service) GetListAbsensi(UserID int) (listAbsensi []dto.GetListAbsensi, 
 
 func (s *service) convertModelToDTOResponse(listAbsensi []Absensi) (listAbsensiResponse []dto.GetListAbsensi) {
 	formatDate := "2006-01-02"
+
 	for _, absensiOnDB := range listAbsensi {
 		absensiResponse := dto.GetListAbsensi{
+			ID:           absensiOnDB.ID,
 			Date:         absensiOnDB.CreatedAt.Format(formatDate),
 			CheckInTime:  absensiOnDB.CheckInTime.String(),
 			CheckOutTime: absensiOnDB.CheckOutTime.String(),
