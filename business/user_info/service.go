@@ -48,7 +48,7 @@ func (s *service) Login(request dto.UserLoginRequest) (userOnDB UserInfo, err er
 
 func (s *service) Logout(request dto.UserLogoutRequest) (err error) {
 
-	return 
+	return
 }
 
 func (s *service) GetListUserInfo() (listUserInfo []dto.GetListUserResponse, err error) {

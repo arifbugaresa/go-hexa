@@ -1,6 +1,7 @@
 package absensi
 
 import (
+	"github.com/arifbugaresa/go-hexa/api/v1/absensi/dto"
 	"github.com/arifbugaresa/go-hexa/business"
 	"time"
 )
@@ -69,6 +70,30 @@ func (s *service) CheckOut(UserID int) (err error) {
 	err = s.repository.UpdateCheckOutAbsensi(absensiOnDB)
 	if err != nil {
 		return business.GenerateErrorQueryDatabase(err)
+	}
+
+	return
+}
+
+func (s *service) GetListAbsensi(UserID int) (listAbsensi []dto.GetListAbsensi, err error) {
+
+	listAbsensiOnDB, err := s.repository.FindAllAbsensiByIDUser(UserID)
+
+	listAbsensi = s.convertModelToDTOResponse(listAbsensiOnDB)
+
+	return
+}
+
+func (s *service) convertModelToDTOResponse(listAbsensi []Absensi) (listAbsensiResponse []dto.GetListAbsensi) {
+	formatDate := "2006-01-02"
+	for _, absensiOnDB := range listAbsensi {
+		absensiResponse := dto.GetListAbsensi{
+			Date:         absensiOnDB.CreatedAt.Format(formatDate),
+			CheckInTime:  absensiOnDB.CheckInTime.String(),
+			CheckOutTime: absensiOnDB.CheckOutTime.String(),
+		}
+
+		listAbsensiResponse = append(listAbsensiResponse, absensiResponse)
 	}
 
 	return

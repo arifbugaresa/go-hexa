@@ -37,3 +37,14 @@ func (c *Controller) CheckOut(context echo.Context) (err error) {
 
 	return context.JSON(common.NewSuccessResponseWithoutData("Berhasil CheckOut"))
 }
+
+func (c *Controller) GetListAbsensiByIDUser(context echo.Context) (err error) {
+	userIDLoggedIn := context.Get("currentUser").(int)
+
+	listAbsensi, err := c.service.GetListAbsensi(userIDLoggedIn)
+	if err != nil {
+		return context.JSON(common.NewErrorBusinessResponse(err))
+	}
+
+	return context.JSON(common.NewSuccessResponseWithData("Berhasil Mengambil Data Absensi", listAbsensi))
+}
