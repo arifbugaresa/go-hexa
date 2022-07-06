@@ -81,3 +81,15 @@ func (c *Controller) DeleteAktivitas(context echo.Context) (err error) {
 	return context.JSON(common.NewSuccessResponseWithoutData("Berhasil menghapus aktivitas"))
 
 }
+
+func (c *Controller) GetListAktivitas(context echo.Context) (err error) {
+	userIDLoggedIn := context.Get("currentUser").(int)
+
+	listAktivitas, err := c.service.GetListAktivitas(userIDLoggedIn)
+	if err != nil {
+		return context.JSON(common.NewErrorBusinessResponse(err))
+	}
+
+	return context.JSON(common.NewSuccessResponseWithData("Berhasil mengambil daftar aktivitas", listAktivitas))
+
+}

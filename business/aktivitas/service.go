@@ -119,3 +119,27 @@ func (s *service) DeleteAktivitas(request dto.AktivitasRequest) (err error) {
 	return
 
 }
+
+func (s *service) GetListAktivitas(UserID int) (listAktivitas []dto.GetListAktivitas, err error) {
+
+	listAktivitasOnDB, err := s.repository.FindAllAktivitasByIDUser(UserID)
+
+	listAktivitas = s.convertModelToDTOResponse(listAktivitasOnDB)
+
+	return
+}
+
+func (s *service) convertModelToDTOResponse(listAktivitas []Aktivitas) (listAktivitasResponse []dto.GetListAktivitas) {
+	formatDate := "2006-01-02"
+	for _, aktivitasOnDB := range listAktivitas {
+		aktivitasResponse := dto.GetListAktivitas{
+			ID:   aktivitasOnDB.ID,
+			Name: aktivitasOnDB.Name,
+			Date: aktivitasOnDB.CreatedAt.Format(formatDate),
+		}
+
+		listAktivitasResponse = append(listAktivitasResponse, aktivitasResponse)
+	}
+
+	return
+}

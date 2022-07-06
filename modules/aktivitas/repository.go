@@ -31,3 +31,8 @@ func (r *repository) FindAktivitasByID(id int64) (aktivitasOnDB aktivitas.Aktivi
 	err = r.db.Find(&aktivitasOnDB, id).Error
 	return aktivitasOnDB, err
 }
+
+func (r *repository) FindAllAktivitasByIDUser(idUser int) (aktivitas []aktivitas.Aktivitas, err error) {
+	err = r.db.Order("created_at DESC").Where("user_info_id = ?", idUser).Find(&aktivitas).Error
+	return
+}
