@@ -23,8 +23,10 @@ func NewDatabaseConnection(config *config.AppConfig) *gorm.DB {
 	dbGormPostgres, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatal("DB Connection Failed")
+		fmt.Println("DB Connection Failed")
 	} else {
 		log.Info("DB Connection Success")
+		fmt.Println("DB Connection Success")
 	}
 
 	return dbGormPostgres
@@ -38,4 +40,5 @@ func CloseDatabaseConnection(db *gorm.DB) {
 	dbSQL.Close()
 
 	log.Info("DB Connection Close")
+	fmt.Println("DB Connection Close")
 }
