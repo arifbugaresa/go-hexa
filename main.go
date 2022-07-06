@@ -97,7 +97,7 @@ func initiateData() {
 }
 
 func runServer() {
-	address := fmt.Sprintf("localhost:%s", config.AppPort)
+	address := fmt.Sprintf("127.0.0.1:%s", config.AppPort)
 	err := e.Start(address)
 	if err != nil {
 		log.Info("shutting down the server")
