@@ -8,13 +8,14 @@ import (
 type errorBusinessResponseCode string
 
 const (
-	errInternalServerError errorBusinessResponseCode = "internal_server_error"
-	errHasBeenModified     errorBusinessResponseCode = "data_has_been modified"
-	errNotFound            errorBusinessResponseCode = "data_not_found"
-	errUnauthorized        errorBusinessResponseCode = "unauthorized"
-	errDuplicateCheckIn    errorBusinessResponseCode = "duplicate_check_in"
-	errDuplicateCheckOut   errorBusinessResponseCode = "duplicate_check_out"
-	errForbiddenCheckOut   errorBusinessResponseCode = "forbidden_check_out"
+	errInternalServerError      errorBusinessResponseCode = "internal_server_error"
+	errHasBeenModified          errorBusinessResponseCode = "data_has_been modified"
+	errNotFound                 errorBusinessResponseCode = "data_not_found"
+	errUnauthorized             errorBusinessResponseCode = "unauthorized"
+	errDuplicateCheckIn         errorBusinessResponseCode = "duplicate_check_in"
+	errDuplicateCheckOut        errorBusinessResponseCode = "duplicate_check_out"
+	errForbiddenCheckOut        errorBusinessResponseCode = "forbidden_check_out"
+	errForbiddenCreateAktivitas errorBusinessResponseCode = "forbidden_create_aktivitas"
 )
 
 //BusinessResponse default payload response
@@ -48,6 +49,8 @@ func errorMapping(err error) (int, BusinessResponse) {
 		return NewDuplicateCheckOutErrorResponse()
 	case business.ErrForbiddenCheckOut:
 		return newForbiddenCheckOutErrorResponse()
+	case business.ErrForbiddenCreateAktivitas:
+		return newForbiddenCreateAktivitasErrorResponse()
 	}
 }
 
@@ -64,6 +67,14 @@ func newForbiddenCheckOutErrorResponse() (int, BusinessResponse) {
 	return http.StatusForbidden, BusinessResponse{
 		errForbiddenCheckOut,
 		"Forbidden CheckOut",
+		map[string]interface{}{},
+	}
+}
+
+func newForbiddenCreateAktivitasErrorResponse() (int, BusinessResponse) {
+	return http.StatusForbidden, BusinessResponse{
+		errForbiddenCreateAktivitas,
+		"Akses Tidak diperbolehkan, Anda Belum CheckIn Hari Ini",
 		map[string]interface{}{},
 	}
 }

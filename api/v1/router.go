@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/arifbugaresa/go-hexa/api/v1/absensi"
+	"github.com/arifbugaresa/go-hexa/api/v1/aktivitas"
 	"github.com/arifbugaresa/go-hexa/api/v1/health"
 	"github.com/arifbugaresa/go-hexa/api/v1/user_info"
 	"github.com/arifbugaresa/go-hexa/middleware/auth"
@@ -13,6 +14,7 @@ func Controller(
 	healthController *health.Controller,
 	userInfoController *user_info.Controller,
 	absensiController *absensi.Controller,
+	aktivitasController *aktivitas.Controller,
 ) {
 	version := "/v1/api"
 
@@ -28,5 +30,10 @@ func Controller(
 	absensi := e.Group(version)
 	absensi.POST("/user/checkin", absensiController.CheckIn, auth.ValidateJwtMiddleware)
 	absensi.POST("/user/checkout", absensiController.CheckOut, auth.ValidateJwtMiddleware)
+
+	// Aktivitas
+	aktivitas := e.Group(version)
+	aktivitas.POST("/user/aktivitas", aktivitasController.CreateAktivitas, auth.ValidateJwtMiddleware)
+
 
 }
