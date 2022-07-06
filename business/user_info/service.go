@@ -46,6 +46,11 @@ func (s *service) Login(request dto.UserLoginRequest) (userOnDB UserInfo, err er
 	return
 }
 
+func (s *service) Logout(request dto.UserLogoutRequest) (err error) {
+
+	return 
+}
+
 func (s *service) GetListUserInfo() (listUserInfo []dto.GetListUserResponse, err error) {
 
 	listUserInfoOnDB, err := s.repository.FindAllUserInfo()
@@ -73,4 +78,3 @@ func (s *service) convertModelToDTOOutForGetList(listUserInfoOnDB []UserInfoMode
 func (s *service) FindUserInfoByID(ID int) (userOnDB UserInfoModel, err error) {
 	return s.repository.FindUserInfoByID(ID)
 }
-

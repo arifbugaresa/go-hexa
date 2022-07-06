@@ -40,6 +40,20 @@ func (c *Controller) Login(context echo.Context) (err error) {
 	return context.JSON(common.NewSuccessResponseWithData("Success Login.", dto.UserLoginResponse{Token: token}))
 }
 
+func (c *Controller) Logout(context echo.Context) (err error) {
+	var request dto.UserLogoutRequest
+	if err = context.Bind(&request); err != nil {
+		return context.JSON(common.NewErrBindData())
+	}
+
+	err = c.service.Logout(request)
+	if err != nil {
+		return context.JSON(common.NewErrorBusinessResponse(err))
+	}
+
+	return context.JSON(common.NewSuccessResponseWithoutData("Success Logout."))
+}
+
 func (c *Controller) GetListUserInfo(context echo.Context) (err error) {
 	var response []dto.GetListUserResponse
 

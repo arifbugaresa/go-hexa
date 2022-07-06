@@ -24,6 +24,7 @@ func Controller(
 	// User Info
 	userInfo := e.Group(version)
 	userInfo.POST("/login", userInfoController.Login)
+	userInfo.POST("/logout", userInfoController.Logout)
 	userInfo.GET("/user-info", userInfoController.GetListUserInfo, auth.ValidateJwtMiddleware)
 
 	// Absensi
