@@ -89,8 +89,11 @@ func initiateData() {
 		Deleted:   false,
 	}
 
-	userInfoRepository.InsertUser(user1)
-	userInfoRepository.InsertUser(user2)
+	userDB, _ := userInfoRepository.FindAllUserInfo()
+	if len(userDB) < 1 {
+		userInfoRepository.InsertUser(user1)
+		userInfoRepository.InsertUser(user2)
+	}
 }
 
 func runServer() {
