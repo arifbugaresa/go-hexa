@@ -16,8 +16,8 @@ func NewDatabaseConnection(config *config.AppConfig) *gorm.DB {
 		dsn = fmt.Sprintf(`host=%s user=%s password=%s port=%s dbname=%s sslmode=disable TimeZone=Asia/Jakarta search_path=%s`,
 			config.DBHost, config.DBUsername, config.DBPassword, config.DBPort, config.DBName, config.SchemaName)
 	} else if config.AppEnvironment == "sandbox" {
-		dsn = fmt.Sprintf(`host=%s user=%s password=%s port=%s dbname=%s sslmode=require TimeZone=Asia/Jakarta search_path=%s`,
-			config.DBHost, config.DBUsername, config.DBPassword, config.DBPort, config.DBName, config.SchemaName)
+		dsn = fmt.Sprintf(`host=%s user=%s password=%s port=%s dbname=%s sslmode=require TimeZone=Asia/Jakarta`,
+			config.DBHost, config.DBUsername, config.DBPassword, config.DBPort, config.DBName)
 	}
 
 	dbGormPostgres, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
