@@ -29,6 +29,6 @@ func (r *repository) UpdateCheckOutAbsensi(absensi absensi.Absensi) (err error) 
 }
 
 func (r *repository) FindAllAbsensiByIDUser(idUser int) (absensi []absensi.Absensi, err error) {
-	err = r.db.Where("user_info_id = ?", idUser).Find(&absensi).Error
+	err = r.db.Where("user_info_id = ? AND deleted = FALSE", idUser).Find(&absensi).Error
 	return
 }

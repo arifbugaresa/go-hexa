@@ -123,7 +123,7 @@ func NewUnauthorizedErrorResponse() (int, BusinessResponse) {
 func NewDuplicateCheckInErrorResponse() (int, BusinessResponse) {
 	return http.StatusBadRequest, BusinessResponse{
 		errDuplicateCheckIn,
-		"Duplicate Check In",
+		"Duplicate Check In, anda sudah melakukan check in",
 		map[string]interface{}{},
 	}
 }
