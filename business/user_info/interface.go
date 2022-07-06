@@ -13,4 +13,5 @@ type Repository interface {
 	FindUserInfoByEmail(email string) (user UserInfo, err error)
 	FindAllUserInfo() (listUserInfo []UserInfoModel, err error)
 	FindUserInfoByID(ID int) (userOnDB UserInfoModel, err error)
+	InsertUser(user UserInfo) (err error)
 }

@@ -19,6 +19,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/gommon/log"
 	"strconv"
+	"time"
 )
 
 var (
@@ -46,6 +47,8 @@ func main() {
 
 	migrateDatabase()
 
+	initiateData()
+
 	api.Controller(e, HealthController, userInfoController, absensiController, aktivitasController)
 
 	runServer()
@@ -59,6 +62,35 @@ func migrateDatabase() {
 	)
 
 	log.Info("Success migrate database, " + strconv.Itoa(int(dbConnection.RowsAffected)) + " row affected.")
+}
+
+func initiateData() {
+	user1 := userInfoServ.UserInfo{
+		Username:  "Arif",
+		Password:  "Password",
+		Email:     "Arif@gmail.com",
+		Phone:     "",
+		CreatedBy: "",
+		CreatedAt: time.Now(),
+		UpdatedBy: "",
+		UpdatedAt: time.Now(),
+		Deleted:   false,
+	}
+
+	user2 := userInfoServ.UserInfo{
+		Username:  "Arif2",
+		Password:  "Password",
+		Email:     "Arif2@gmail.com",
+		Phone:     "",
+		CreatedBy: "",
+		CreatedAt: time.Now(),
+		UpdatedBy: "",
+		UpdatedAt: time.Now(),
+		Deleted:   false,
+	}
+
+	userInfoRepository.InsertUser(user1)
+	userInfoRepository.InsertUser(user2)
 }
 
 func runServer() {

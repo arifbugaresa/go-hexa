@@ -25,6 +25,10 @@ func (r *repository) FindUserInfoByEmail(email string) (user user_info.UserInfo,
 	return
 }
 
+func (r *repository) InsertUser(user user_info.UserInfo) (err error) {
+	return r.db.Create(&user).Error
+}
+
 func (r *repository) FindAllUserInfo() (listUserInfo []user_info.UserInfoModel, err error) {
 	var temp user_info.UserInfoModel
 
