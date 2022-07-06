@@ -18,7 +18,9 @@ var (
 	ErrDuplicateCheckIn         = errors.New("duplicate check in")
 	ErrDuplicateCheckOut        = errors.New("duplicate check Out")
 	ErrForbiddenCheckOut        = errors.New("forbidden check Out")
-	ErrForbiddenCreateAktivitas = errors.New("akses tidak diperbolehkan")
+	ErrForbiddenAccess          = errors.New("forbidden access")
+	ErrForbiddenCreateAktivitas = errors.New("akses tambah aktivitas tidak diperbolehkan")
+	ErrForbiddenUpdateAktivitas = errors.New("akses ubah aktivitas tidak diperbolehkan")
 )
 
 func GenerateErrorEmailAndPasswordMissmatch() (err error) {

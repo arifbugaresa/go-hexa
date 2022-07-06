@@ -15,7 +15,9 @@ const (
 	errDuplicateCheckIn         errorBusinessResponseCode = "duplicate_check_in"
 	errDuplicateCheckOut        errorBusinessResponseCode = "duplicate_check_out"
 	errForbiddenCheckOut        errorBusinessResponseCode = "forbidden_check_out"
+	errForbiddenAccess          errorBusinessResponseCode = "forbidden_access"
 	errForbiddenCreateAktivitas errorBusinessResponseCode = "forbidden_create_aktivitas"
+	errForbiddenUpdateAktivitas errorBusinessResponseCode = "forbidden_update_aktivitas"
 )
 
 //BusinessResponse default payload response
@@ -51,6 +53,10 @@ func errorMapping(err error) (int, BusinessResponse) {
 		return newForbiddenCheckOutErrorResponse()
 	case business.ErrForbiddenCreateAktivitas:
 		return newForbiddenCreateAktivitasErrorResponse()
+	case business.ErrForbiddenUpdateAktivitas:
+		return newForbiddenUpdateAktivitasErrorResponse()
+	case business.ErrForbiddenAccess:
+		return newForbiddenAccessErrorResponse()
 	}
 }
 
@@ -71,10 +77,26 @@ func newForbiddenCheckOutErrorResponse() (int, BusinessResponse) {
 	}
 }
 
+func newForbiddenAccessErrorResponse() (int, BusinessResponse) {
+	return http.StatusForbidden, BusinessResponse{
+		errForbiddenAccess,
+		"Forbidden, Anda tidak berhak mengakses aktivitas ini",
+		map[string]interface{}{},
+	}
+}
+
 func newForbiddenCreateAktivitasErrorResponse() (int, BusinessResponse) {
 	return http.StatusForbidden, BusinessResponse{
 		errForbiddenCreateAktivitas,
-		"Akses Tidak diperbolehkan, Anda Belum CheckIn Hari Ini",
+		"Akses Tidak diperbolehkan menambahkan data, Anda Belum CheckIn Hari Ini",
+		map[string]interface{}{},
+	}
+}
+
+func newForbiddenUpdateAktivitasErrorResponse() (int, BusinessResponse) {
+	return http.StatusForbidden, BusinessResponse{
+		errForbiddenUpdateAktivitas,
+		"Akses Tidak diperbolehkan mengubah data, Anda Belum CheckIn Hari Ini",
 		map[string]interface{}{},
 	}
 }

@@ -60,3 +60,33 @@ func (s *service) IsCheckInToday(absensi absensi.Absensi) bool {
 
 	return false
 }
+
+func (s *service) UpdateAktivitas(request dto.AktivitasRequest) (err error) {
+
+	absensiOnDB, err := s.absensiRepository.FindAbsensiByUserID(int(request.UserInfoId))
+
+	if !s.IsCheckInToday(absensiOnDB) {
+		return business.ErrForbiddenUpdateAktivitas
+	}
+
+	aktivitasOnDB, err := s.repository.FindAktivitasByID(request.ID)
+	if err != nil || aktivitasOnDB.ID == 0 {
+		return business.ErrDataNotFound
+	}
+
+	if aktivitasOnDB.UserInfoID != request.UserInfoId {
+		return business.ErrForbiddenAccess
+	}
+
+	aktivitasOnDB.UpdatedAt = time.Now()
+	aktivitasOnDB.Name = request.Name
+	aktivitasOnDB.ID = request.ID
+
+	err = s.repository.UpdateAktivitas(aktivitasOnDB)
+	if err != nil {
+		return business.ErrDatabase
+	}
+
+	return
+
+}
