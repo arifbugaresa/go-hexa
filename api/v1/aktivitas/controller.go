@@ -59,3 +59,25 @@ func (c *Controller) UpdateAktivitas(context echo.Context) (err error) {
 	return context.JSON(common.NewSuccessResponseWithoutData("Berhasil mengubah aktivitas"))
 
 }
+
+func (c *Controller) DeleteAktivitas(context echo.Context) (err error) {
+	userIDLoggedIn := int64(context.Get("currentUser").(int))
+	var request dto.AktivitasRequest
+
+	// mengambil id dari url param
+	id, err := strconv.Atoi(context.Param("id"))
+	if err != nil {
+		return err
+	}
+
+	request.ID = int64(id)
+	request.UserInfoId = userIDLoggedIn
+
+	err = c.service.DeleteAktivitas(request)
+	if err != nil {
+		return context.JSON(common.NewErrorBusinessResponse(err))
+	}
+
+	return context.JSON(common.NewSuccessResponseWithoutData("Berhasil menghapus aktivitas"))
+
+}

@@ -35,5 +35,6 @@ func Controller(
 	aktivitas := e.Group(version)
 	aktivitas.POST("/user/aktivitas", aktivitasController.CreateAktivitas, auth.ValidateJwtMiddleware)
 	aktivitas.PUT("/user/aktivitas/:id", aktivitasController.UpdateAktivitas, auth.ValidateJwtMiddleware)
+	aktivitas.DELETE("/user/aktivitas/:id", aktivitasController.DeleteAktivitas, auth.ValidateJwtMiddleware)
 
 }

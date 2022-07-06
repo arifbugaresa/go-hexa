@@ -90,3 +90,32 @@ func (s *service) UpdateAktivitas(request dto.AktivitasRequest) (err error) {
 	return
 
 }
+
+func (s *service) DeleteAktivitas(request dto.AktivitasRequest) (err error) {
+
+	absensiOnDB, err := s.absensiRepository.FindAbsensiByUserID(int(request.UserInfoId))
+
+	if !s.IsCheckInToday(absensiOnDB) {
+		return business.ErrForbiddenDeleteAktivitas
+	}
+
+	aktivitasOnDB, err := s.repository.FindAktivitasByID(request.ID)
+	if err != nil || aktivitasOnDB.ID == 0 {
+		return business.ErrDataNotFound
+	}
+
+	if aktivitasOnDB.UserInfoID != request.UserInfoId {
+		return business.ErrForbiddenAccess
+	}
+
+	aktivitasOnDB.UpdatedAt = time.Now()
+	aktivitasOnDB.Deleted = true
+
+	err = s.repository.DeleteAktivitas(aktivitasOnDB)
+	if err != nil {
+		return business.ErrDatabase
+	}
+
+	return
+
+}

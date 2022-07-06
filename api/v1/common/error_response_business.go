@@ -17,6 +17,7 @@ const (
 	errForbiddenCheckOut        errorBusinessResponseCode = "forbidden_check_out"
 	errForbiddenAccess          errorBusinessResponseCode = "forbidden_access"
 	errForbiddenCreateAktivitas errorBusinessResponseCode = "forbidden_create_aktivitas"
+	errForbiddenDeleteAktivitas errorBusinessResponseCode = "forbidden_delete_aktivitas"
 	errForbiddenUpdateAktivitas errorBusinessResponseCode = "forbidden_update_aktivitas"
 )
 
@@ -57,6 +58,8 @@ func errorMapping(err error) (int, BusinessResponse) {
 		return newForbiddenUpdateAktivitasErrorResponse()
 	case business.ErrForbiddenAccess:
 		return newForbiddenAccessErrorResponse()
+	case business.ErrForbiddenDeleteAktivitas:
+		return newForbiddenDeleteAktivitasErrorResponse()
 	}
 }
 
@@ -89,6 +92,14 @@ func newForbiddenCreateAktivitasErrorResponse() (int, BusinessResponse) {
 	return http.StatusForbidden, BusinessResponse{
 		errForbiddenCreateAktivitas,
 		"Akses Tidak diperbolehkan menambahkan data, Anda Belum CheckIn Hari Ini",
+		map[string]interface{}{},
+	}
+}
+
+func newForbiddenDeleteAktivitasErrorResponse() (int, BusinessResponse) {
+	return http.StatusForbidden, BusinessResponse{
+		errForbiddenDeleteAktivitas,
+		"Akses Tidak diperbolehkan menghapus data, Anda Belum CheckIn Hari Ini",
 		map[string]interface{}{},
 	}
 }

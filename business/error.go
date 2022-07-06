@@ -21,6 +21,7 @@ var (
 	ErrForbiddenAccess          = errors.New("forbidden access")
 	ErrForbiddenCreateAktivitas = errors.New("akses tambah aktivitas tidak diperbolehkan")
 	ErrForbiddenUpdateAktivitas = errors.New("akses ubah aktivitas tidak diperbolehkan")
+	ErrForbiddenDeleteAktivitas = errors.New("akses menghapus aktivitas tidak diperbolehkan")
 )
 
 func GenerateErrorEmailAndPasswordMissmatch() (err error) {
