@@ -12,12 +12,14 @@ func NewDatabaseConnection(config *config.AppConfig) *gorm.DB {
 	var dsn string
 
 	log.Info("Starting on " + config.AppEnvironment)
+
+
 	if config.AppEnvironment == "development" {
 		dsn = fmt.Sprintf(`host=%s user=%s password=%s port=%s dbname=%s sslmode=disable TimeZone=Asia/Jakarta search_path=%s`,
 			config.DBHost, config.DBUsername, config.DBPassword, config.DBPort, config.DBName, config.SchemaName)
 	} else if config.AppEnvironment == "sandbox" {
-		dsn = fmt.Sprintf(`host=%s user=%s password=%s port=%s dbname=%s sslmode=require TimeZone=Asia/Jakarta`,
-			config.DBHost, config.DBUsername, config.DBPassword, config.DBPort, config.DBName)
+		dsn = fmt.Sprintf(`host=%s user=%s password=%s port=%s dbname=%s sslmode=require TimeZone=Asia/Jakarta search_path=%s`,
+			config.DBHost, config.DBUsername, config.DBPassword, config.DBPort, config.DBName, config.SchemaName)
 	}
 
 	dbGormPostgres, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
