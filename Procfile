@@ -1,1 +1,1 @@
-web: sandbox-absensi
+web: github.com/arifbugaresa/go-hexa
